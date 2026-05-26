@@ -9,6 +9,7 @@ dependencies = [
     "ollama>=0.6.2",
     "peft>=0.19.1",
     "resemble-perth",
+    "speechrecognition>=3.16.1",
     "torch==2.6.0",
     "torchaudio==2.6.0",
 ]
