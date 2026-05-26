@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = "==3.11.*"
 dependencies = [
     "chatterbox-tts>=0.1.7",
+    "peft>=0.19.1",
+    "resemble-perth",
     "torch==2.6.0",
     "torchaudio==2.6.0",
 ]
@@ -22,3 +24,4 @@ torch = [
 torchaudio = [
   { index = "pytorch-cu126", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
 ]
+resemble-perth = { git = "https://github.com/eschmidbauer/Perth.git" }
