@@ -25,6 +25,9 @@ r.pause_threshold = 2
 # suggested by a stackoverflow commenter to help combat when the recording stops and starts at unusual times
 r.dynamic_energy_threshold = False
 
+# this is a value that I think needs to be played around with depending on your laptop's microphone
+# r.energy_threshold = 400
+
 # listen to the person speak
 with sr.Microphone() as source:
     # tell the SpeechRecognition library to adjust for background noise
