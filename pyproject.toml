@@ -6,8 +6,10 @@ readme = "README.md"
 requires-python = "==3.11.*"
 dependencies = [
     "chatterbox-tts>=0.1.7",
+    "faster-whisper>=1.2.1",
     "ollama>=0.6.2",
     "peft>=0.19.1",
+    "pyaudio>=0.2.14",
     "resemble-perth",
     "speechrecognition>=3.16.1",
     "torch==2.6.0",
