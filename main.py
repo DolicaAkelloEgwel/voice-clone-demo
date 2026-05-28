@@ -1,7 +1,4 @@
-import wave
-
 import playsound3 as playsound
-import pyaudio
 import speech_recognition as sr
 import torchaudio as ta
 from chatterbox.tts_turbo import ChatterboxTurboTTS
