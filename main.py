@@ -1,3 +1,5 @@
+import time
+
 import playsound3 as playsound
 import requests
 import speech_recognition as sr
@@ -80,8 +82,15 @@ response = chat(
 reflection = response.message.content
 print("LLM Response:", reflection)
 
-res = vb.generate_audio(reflection)
-print(res)
+res = vb.begin_generating_audio(reflection)
+
+while not vb.generation_complete():
+    print("generation not complete yet...")
+    time.sleep(5)
+
+print(vb.get_audio_path())
+
+# vb.delete_profile()
 
 # # Load the voice-cloning model
 # model = ChatterboxTurboTTS.from_pretrained(device="cuda")
