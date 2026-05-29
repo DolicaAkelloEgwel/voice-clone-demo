@@ -1,15 +1,20 @@
+import os
 import uuid
 
 import playsound3 as playsound
 import requests
 import speech_recognition as sr
-import torchaudio as ta
-from chatterbox.tts_turbo import ChatterboxTurboTTS
 from ollama import chat
+
+from voicebox import VoiceBox
 
 USER_SPEECH_FILENAME = "user-speech.wav"
 CLONE_FILENAME = "voice-clone.wav"
-VOICEBOX_API_URL = "http://127.0.0.1:17493"
+PROJECT_DIR = os.path.abspath(__file__)
+GLOBAL_INPUT_AUDIO_PATH = os.path.join(PROJECT_DIR, USER_SPEECH_FILENAME)
+print(GLOBAL_INPUT_AUDIO_PATH)
+
+test = True
 
 # language model - must be something that has been installed with Ollama
 OLLAMA_MODEL_NAME = "deepseek-r1:7b"
@@ -29,37 +34,35 @@ r.dynamic_energy_threshold = False
 # this is a value that I think needs to be played around with depending on your laptop's microphone
 # r.energy_threshold = 400
 
-
-def create_voicebox_profile():
-    data = {
-        "name": str(uuid.uuid4()).replace("-", "")[:6],
-        "default_engine": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
-    }
-    response = requests.post(VOICEBOX_API_URL + "/profiles/", json=data)
-    return response
-
-
-response = create_voicebox_profile()
-print(response)
-
-# response = requests.get
-
-exit()
-
+vb = VoiceBox()
+vb.create_profile()
 
 # listen to the person speak
-with sr.Microphone() as source:
-    # tell the SpeechRecognition library to adjust for background noise
-    r.adjust_for_ambient_noise(source)
 
-    print("Say something!")
-    audio = r.listen(source, timeout=8)
+if not test:
+    with sr.Microphone() as source:
+        # tell the SpeechRecognition library to adjust for background noise
+        r.adjust_for_ambient_noise(source)
 
-print("Finished listening.")
+        print("Say something!")
+        audio = r.listen(source, timeout=8)
 
-# save microphone audio file
-with open(USER_SPEECH_FILENAME, "wb") as f:
-    f.write(audio.get_wav_data())
+    print("Finished listening.")
+
+    # save microphone audio file
+    with open(USER_SPEECH_FILENAME, "wb") as f:
+        f.write(audio.get_wav_data())
+else:
+    USER_SPEECH_FILENAME = "test-audio.wav"
+
+res = vb.add_voice_sample(
+    open(USER_SPEECH_FILENAME, "rb").read(),
+    USER_SPEECH_FILENAME,
+    "the subject speaking about a personal dilemma",
+)
+
+
+exit()
 
 # transcribe speech from the recording
 print("Transcribing...")
@@ -89,9 +92,6 @@ print("LLM Response:", reflection)
 
 # # save the cloned audio
 # ta.save(CLONE_FILENAME, wav, model.sr)
-
-create_voicebox_profile()
-print(response)
 
 # # play the cloned voice file
 # playsound.playsound(CLONE_FILENAME, block=True)
