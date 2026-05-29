@@ -10,11 +10,13 @@ dependencies = [
     "ollama>=0.6.2",
     "peft>=0.19.1",
     "playsound3>=3.3.1",
-    "pyaudio>=0.2.14",
+    "pyaudio>=0.2.14; sys_platform == 'win32'",
+    "requests>=2.34.2",
     "resemble-perth",
     "speechrecognition>=3.16.1",
     "torch==2.6.0",
     "torchaudio==2.6.0",
+    "uuid>=1.30",
 ]
 
 [[tool.uv.index]]
