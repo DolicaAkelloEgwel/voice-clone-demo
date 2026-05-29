@@ -1,3 +1,4 @@
+import os
 import time
 
 import playsound3 as playsound
@@ -9,6 +10,7 @@ from voicebox import VoiceBox
 
 USER_SPEECH_FILENAME = "user-speech.wav"
 CLONE_FILENAME = "voice-clone.wav"
+GENERATION_PATH = "C:/Users/CTH/AppData/Roaming/sh.voicebox.app/"
 
 test = True
 
@@ -88,9 +90,7 @@ while not vb.generation_complete():
     print("generation not complete yet...")
     time.sleep(5)
 
-print(vb.get_audio_path())
-
-# vb.delete_profile()
+clone_path = vb.get_audio_path()
 
 # # Load the voice-cloning model
 # model = ChatterboxTurboTTS.from_pretrained(device="cuda")
@@ -101,5 +101,6 @@ print(vb.get_audio_path())
 # # save the cloned audio
 # ta.save(CLONE_FILENAME, wav, model.sr)
 
-# # play the cloned voice file
-# playsound.playsound(CLONE_FILENAME, block=True)
+# play the cloned voice file
+playsound.playsound(os.path.join(VOICEBOX_DIR, clone_path), block=True)
+vb.delete_profile()
