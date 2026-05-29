@@ -43,7 +43,9 @@ class VoiceBox:
         return response
 
     def generate_audio(self, text: str):
-        pass
+        data = {"profile_id": self._id, "text": text}
+        response = requests.post(VOICEBOX_API_URL + "/generate", json=data)
+        return response
 
     def delete_profile(self):
         response = requests.delete(VOICEBOX_API_URL + PROFILES + self._id)
