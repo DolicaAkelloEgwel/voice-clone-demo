@@ -12,7 +12,7 @@ class VoiceBox:
         self._id = ""
         self._name = str(uuid.uuid4()).replace("-", "")[:6]
 
-    def _success(self, response):
+    def _success(self, response) -> int:
         return response.status_code == 200
 
     def create_profile(self):
@@ -26,9 +26,12 @@ class VoiceBox:
             pass
         return response
 
-    def add_voice_sample(self, audio_data, filename, reference):
+    def add_voice_sample(self, audio_data, filename: str, transcription: str):
         body, header = urllib3.encode_multipart_formdata(
-            {"file": (filename, audio_data, "audio/wav"), "reference_text": reference}
+            {
+                "file": (filename, audio_data, "audio/wav"),
+                "reference_text": transcription,
+            }
         )
         response = requests.post(
             f"{VOICEBOX_API_URL}{PROFILES}{self._id}/samples",
@@ -38,6 +41,9 @@ class VoiceBox:
         if not self._success(response):
             pass
         return response
+
+    def generate_audio(self, text: str):
+        pass
 
     def delete_profile(self):
         response = requests.delete(VOICEBOX_API_URL + PROFILES + self._id)
