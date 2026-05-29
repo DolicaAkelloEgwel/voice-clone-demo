@@ -12,13 +12,17 @@ class VoiceBox:
         self._id = ""
         self._name = str(uuid.uuid4()).replace("-", "")[:6]
 
+    def _success(self, response):
+        return response.status_code == 200
+
     def create_profile(self):
         data = {"name": self._name}
         response = requests.post(VOICEBOX_API_URL + PROFILES, json=data)
 
-        if response.status_code == 200:
+        if self._success(response):
             self._id = response.json()["id"]
         else:
+            # this means creating a profile failed
             pass
         return response
 
@@ -31,7 +35,8 @@ class VoiceBox:
             data=body,
             headers={"content-type": header},
         )
-        print("Response", response.status_code)
+        if not self._success(response):
+            pass
         return response
 
     def delete_profile(self):
