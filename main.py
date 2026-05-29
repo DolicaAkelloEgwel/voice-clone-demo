@@ -48,10 +48,10 @@ if not test:
         f.write(audio.get_wav_data())
 else:
     USER_SPEECH_FILENAME = "test-audio.wav"
-    transcription = "The stale smell of old beer lingers. It takes heat to bring out the odor. A cold dip restores health and zest. A salt pickle tastes fine with ham. Tacos Al Pastor are my favourite. A zestful food is the hot-crossed bun."
+    transcription = "The stale smell of old beer lingers. It takes heat to bring out the odour. A cold dip restores health and zest. A salt pickle tastes fine with ham. Tacos Al Pastor are my favourite. A zestful food is the hot-crossed bun."
+    audio = None
+    r.recognize_faster_whisper = lambda x: transcription
 
-
-exit()
 
 # transcribe speech from the recording
 print("Transcribing...")
@@ -64,6 +64,9 @@ res = vb.add_voice_sample(
     USER_SPEECH_FILENAME,
     transcription,
 )
+
+exit()
+
 
 # send transcription to the LLM
 response = chat(
