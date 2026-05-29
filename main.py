@@ -1,4 +1,7 @@
+import uuid
+
 import playsound3 as playsound
+import requests
 import speech_recognition as sr
 import torchaudio as ta
 from chatterbox.tts_turbo import ChatterboxTurboTTS
@@ -6,6 +9,7 @@ from ollama import chat
 
 USER_SPEECH_FILENAME = "user-speech.wav"
 CLONE_FILENAME = "voice-clone.wav"
+VOICEBOX_API_URL = "http://127.0.0.1:17493"
 
 # language model - must be something that has been installed with Ollama
 OLLAMA_MODEL_NAME = "deepseek-r1:7b"
@@ -24,6 +28,24 @@ r.dynamic_energy_threshold = False
 
 # this is a value that I think needs to be played around with depending on your laptop's microphone
 # r.energy_threshold = 400
+
+
+def create_voicebox_profile():
+    data = {
+        "name": str(uuid.uuid4()).replace("-", "")[:6],
+        "default_engine": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+    }
+    response = requests.post(VOICEBOX_API_URL + "/profiles/", json=data)
+    return response
+
+
+response = create_voicebox_profile()
+print(response)
+
+# response = requests.get
+
+exit()
+
 
 # listen to the person speak
 with sr.Microphone() as source:
@@ -59,14 +81,17 @@ response = chat(
 reflection = response.message.content
 print("LLM Response:", reflection)
 
-# Load the voice-cloning model
-model = ChatterboxTurboTTS.from_pretrained(device="cuda")
+# # Load the voice-cloning model
+# model = ChatterboxTurboTTS.from_pretrained(device="cuda")
 
-# Generate audio in the style of the speech
-wav = model.generate(reflection, audio_prompt_path=USER_SPEECH_FILENAME)
+# # Generate audio in the style of the speech
+# wav = model.generate(reflection, audio_prompt_path=USER_SPEECH_FILENAME)
 
-# save the cloned audio
-ta.save(CLONE_FILENAME, wav, model.sr)
+# # save the cloned audio
+# ta.save(CLONE_FILENAME, wav, model.sr)
 
-# play the cloned voice file
-playsound.playsound(CLONE_FILENAME, block=True)
+create_voicebox_profile()
+print(response)
+
+# # play the cloned voice file
+# playsound.playsound(CLONE_FILENAME, block=True)
