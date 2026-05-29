@@ -10,7 +10,7 @@ from voicebox import VoiceBox
 
 USER_SPEECH_FILENAME = "user-speech.wav"
 CLONE_FILENAME = "voice-clone.wav"
-GENERATION_PATH = "C:/Users/CTH/AppData/Roaming/sh.voicebox.app/"
+VOICEBOX_DIR = "C:/Users/CTH/AppData/Roaming/sh.voicebox.app/"
 
 test = True
 
