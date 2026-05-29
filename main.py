@@ -1,6 +1,3 @@
-import os
-import uuid
-
 import playsound3 as playsound
 import requests
 import speech_recognition as sr
@@ -10,9 +7,6 @@ from voicebox import VoiceBox
 
 USER_SPEECH_FILENAME = "user-speech.wav"
 CLONE_FILENAME = "voice-clone.wav"
-PROJECT_DIR = os.path.abspath(__file__)
-GLOBAL_INPUT_AUDIO_PATH = os.path.join(PROJECT_DIR, USER_SPEECH_FILENAME)
-print(GLOBAL_INPUT_AUDIO_PATH)
 
 test = True
 
@@ -54,28 +48,30 @@ if not test:
         f.write(audio.get_wav_data())
 else:
     USER_SPEECH_FILENAME = "test-audio.wav"
-
-res = vb.add_voice_sample(
-    open(USER_SPEECH_FILENAME, "rb").read(),
-    USER_SPEECH_FILENAME,
-    "the subject speaking about a personal dilemma",
-)
+    transcription = "The stale smell of old beer lingers. It takes heat to bring out the odor. A cold dip restores health and zest. A salt pickle tastes fine with ham. Tacos Al Pastor are my favourite. A zestful food is the hot-crossed bun."
 
 
 exit()
 
 # transcribe speech from the recording
 print("Transcribing...")
-speech = r.recognize_faster_whisper(audio)
-print("Transcription complete:", speech)
+transcription = r.recognize_faster_whisper(audio)
+print("Transcription complete:", transcription)
 
-# send transcribed speech to the ollama model
+# send the audio sample + transcription to voicebox
+res = vb.add_voice_sample(
+    open(USER_SPEECH_FILENAME, "rb").read(),
+    USER_SPEECH_FILENAME,
+    transcription,
+)
+
+# send transcription to the LLM
 response = chat(
     model=OLLAMA_MODEL_NAME,
     messages=[
         {
             "role": "user",
-            "content": PROMPT + speech,
+            "content": PROMPT + transcription,
         },
     ],
 )
