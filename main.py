@@ -65,9 +65,6 @@ res = vb.add_voice_sample(
     transcription,
 )
 
-exit()
-
-
 # send transcription to the LLM
 response = chat(
     model=OLLAMA_MODEL_NAME,
@@ -82,6 +79,9 @@ response = chat(
 # store the reply in a variable
 reflection = response.message.content
 print("LLM Response:", reflection)
+
+res = vb.generate_audio(reflection)
+print(res)
 
 # # Load the voice-cloning model
 # model = ChatterboxTurboTTS.from_pretrained(device="cuda")
