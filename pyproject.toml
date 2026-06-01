@@ -5,7 +5,6 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = "==3.11.*"
 dependencies = [
-    "chatterbox-tts>=0.1.7",
     "faster-whisper>=1.2.1",
     "ollama>=0.6.2",
     "peft>=0.19.1",
@@ -14,8 +13,6 @@ dependencies = [
     "requests>=2.34.2",
     "resemble-perth",
     "speechrecognition>=3.16.1",
-    "torch==2.6.0",
-    "torchaudio==2.6.0",
     "uuid>=1.30",
 ]
 
@@ -25,12 +22,6 @@ url = "https://download.pytorch.org/whl/cu126"
 explicit = true
 
 [tool.uv.sources]
-torch = [
-  { index = "pytorch-cu126", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
-]
-torchaudio = [
-  { index = "pytorch-cu126", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
-]
 resemble-perth = { git = "https://github.com/eschmidbauer/Perth.git" }
 
 [dependency-groups]
